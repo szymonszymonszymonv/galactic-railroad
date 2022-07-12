@@ -12,4 +12,17 @@ router.get("/medics", async (req, res) => {
     res.send(medics)
 })
 
+router.post("/admin", async (req, res) => {
+    console.log(`POST /admin`)
+    try {
+        const admin = new Admin({ email: req.body.email, password: req.body.password })
+        await admin.save(
+            res.send(admin)
+        )
+    }
+    catch(e) {
+        res.status(400).send(e.message)
+    }
+})
+
 module.exports = router

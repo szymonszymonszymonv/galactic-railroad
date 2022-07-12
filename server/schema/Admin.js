@@ -5,6 +5,6 @@ const AdminSchema = mongoose.Schema({
     password: Boolean
 })
 
-const Admin = mongoose.model("Admin", TodoSchema)
+const Admin = mongoose.model("Admin", AdminSchema)
 
 module.exports = { Admin, AdminSchema }

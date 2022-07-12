@@ -18,6 +18,7 @@ yarn-error.log
 .classpath
 .c9/
 *.launch
+.vscode
 .settings/
 *.sublime-workspace
 
