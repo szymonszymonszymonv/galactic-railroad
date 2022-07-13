@@ -1,1 +1,56 @@
-<p>medics-schedule works!</p>
+<div class="calendar">
+    <div class="side-calendar">
+        <mat-calendar [(selected)]="currentDate"></mat-calendar>
+    </div>
+    <div class="main-calendar">
+        <div class="week-grid">
+            <div></div>
+            <div class="week monday">monday</div>
+            <div class="week tuesday">tuesday</div>
+            <div class="week wednesday">wednesday</div>
+            <div class="week thursday">thursday</div>
+            <div class="week friday">friday</div>
+            <div class="week saturday">saturday</div>
+            <div class="week sunday">sunday</div>
+        </div>
+        <div class="schedule-grid">
+            <!-- fill dynamically -->
+            <div class="time">
+                <div>8</div>
+                <div>9</div>
+                <div>11</div>
+                <div>12</div>
+                <div>13</div>
+                <div>14</div>
+                <div>15</div>
+                <div>16</div>
+                <div>17</div>
+                <div>18</div>
+                <div>19</div>
+                <div>20</div>
+            </div>
+            <div class="week monday">
+                <div>operacja</div>
+                <div>operacja</div>
+            </div>
+            <div class="week tuesday">
+                <div>konsultacja</div>
+            </div>
+            <div class="week wednesday">
+
+            </div>
+            <div class="week thursday">
+
+            </div>
+            <div class="week friday">
+
+            </div>
+            <div class="week saturday">
+
+            </div>
+            <div class="week sunday">
+
+            </div>
+        </div>
+    </div>
+</div>

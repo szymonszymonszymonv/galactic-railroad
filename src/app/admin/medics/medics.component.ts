@@ -16,7 +16,7 @@ export class MedicsComponent implements OnInit {
   constructor(
     private medicService: MedicService,
     private store: Store
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.getMedics()

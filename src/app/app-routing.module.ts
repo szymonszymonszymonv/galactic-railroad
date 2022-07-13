@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: `admin/register`, component: RegisterComponent},
   {path: `admin/login`, component: LoginComponent},
   {path: `admin/medics`, component: MedicsComponent},
-  {path: `admin/medics/schedule`, component: MedicsScheduleComponent}
+  {path: `admin/medics/:id/schedule`, component: MedicsScheduleComponent}
 ];
 
 @NgModule({

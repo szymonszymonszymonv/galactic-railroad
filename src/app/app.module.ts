@@ -18,6 +18,11 @@ import { StoreModule } from '@ngrx/store';
 import { MatListModule } from '@angular/material/list';
 import { medicsReducer } from './state/medics.reducer';
 import { BaseUrlInterceptor } from './base-url.interceptor';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCalendar, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -32,13 +37,19 @@ import { BaseUrlInterceptor } from './base-url.interceptor';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     StoreModule.forRoot({ medics: medicsReducer }),
-    MatListModule
+    MatListModule,
+    MatCardModule,
+    MatButtonToggleModule,
+    MatGridListModule,
+    MatDatepickerModule,
+    MatNativeDateModule
     
   ],
   providers: [
