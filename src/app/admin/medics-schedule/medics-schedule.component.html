@@ -1,40 +1,51 @@
 <div class="calendar">
     <div class="side-calendar">
         <mat-calendar [(selected)]="currentDate"></mat-calendar>
+        <div class="calendar-actions">
+            <button mat-raised-button>Add appointment</button>
+        </div>
     </div>
     <div class="main-calendar">
-        <div class="week-grid">
-            <div></div>
-            <div class="week monday">monday</div>
-            <div class="week tuesday">tuesday</div>
-            <div class="week wednesday">wednesday</div>
-            <div class="week thursday">thursday</div>
-            <div class="week friday">friday</div>
-            <div class="week saturday">saturday</div>
-            <div class="week sunday">sunday</div>
+        <div class="week-grid-headers">
+            <div class="icon-container">
+                <mat-icon>schedule</mat-icon>
+            </div>
+            <div class="week-header monday">monday</div>
+            <div class="week-header tuesday">tuesday</div>
+            <div class="week-header wednesday">wednesday</div>
+            <div class="week-header thursday">thursday</div>
+            <div class="week-header friday">friday</div>
+            <div class="week-header saturday">saturday</div>
+            <div class="week-header sunday">sunday</div>
         </div>
         <div class="schedule-grid">
             <!-- fill dynamically -->
-            <div class="time">
-                <div>8</div>
-                <div>9</div>
-                <div>11</div>
-                <div>12</div>
-                <div>13</div>
-                <div>14</div>
-                <div>15</div>
-                <div>16</div>
-                <div>17</div>
-                <div>18</div>
-                <div>19</div>
-                <div>20</div>
+            <div class="time-side">
+                <div class="schedule-item time-header">8</div>
+                <div class="schedule-item time-header">9</div>
+                <div class="schedule-item time-header">10</div>
+                <div class="schedule-item time-header">11</div>
+                <div class="schedule-item time-header">12</div>
+                <div class="schedule-item time-header">13</div>
+                <div class="schedule-item time-header">14</div>
+                <div class="schedule-item time-header">15</div>
+                <div class="schedule-item time-header">16</div>
+                <div class="schedule-item time-header">17</div>
+                <div class="schedule-item time-header">18</div>
+                <div class="schedule-item time-header">19</div>
+                <div class="schedule-item time-header">20</div>
             </div>
             <div class="week monday">
-                <div>operacja</div>
-                <div>operacja</div>
+                <div 
+                *ngFor="let event of events" 
+                class="schedule-item task"
+                [ngStyle]="{'margin-top': event.margin, 'height': event.height}"
+                >
+                    event
+                </div>
             </div>
             <div class="week tuesday">
-                <div>konsultacja</div>
+                <div class="schedule-item task">kokos</div>
             </div>
             <div class="week wednesday">
 

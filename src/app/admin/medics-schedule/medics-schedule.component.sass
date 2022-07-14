@@ -9,16 +9,50 @@
 
 .main-calendar
     display: flex
+    padding: 1rem
     flex-grow: 1
     flex-direction: column
 
-.week-grid
+.week-grid-headers
     display: grid
     grid: auto-flow 1fr / 0.50fr repeat(7, 1fr)
     justify-items: center
 
+.week-header
+    box-shadow: 1px 1px 4px black
+    width: 100%
+    padding: 0.5rem 0
+    text-align: center
+    background-color: #ebebeb
+
+.time-header
+    background-color: #ebebeb
+
+.icon-container
+    display: flex
+    align-items: center
+    justify-content: center
+
 .schedule-grid
+    margin: 1rem 0
     display: grid
-    grid: repeat(24, 1fr) / 0.50fr repeat(7, 1fr)
+    grid: auto-flow 1fr / 0.50fr repeat(7, 1fr)
     justify-items: center
+
+.calendar-actions
+    display: flex
+    align-items: center
+    justify-content: center
+
+.week
+    display: flex
+    flex-direction: column
+    width: 100%
     
+.schedule-item
+    display: flex
+    padding: 0.5rem
+    height: 6rem
+    box-shadow: 1px 1px 4px black
+.task 
+    background-color: #c1c2ff
