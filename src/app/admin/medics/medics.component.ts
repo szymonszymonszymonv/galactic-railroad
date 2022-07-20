@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Medic } from 'src/app/medic/medic';
 import { MedicService } from 'src/app/medic/medic.service';
+import { AppState } from 'src/app/state/app.state';
 import { addMedic, retrievedMedicsList } from 'src/app/state/medics.actions';
-import { selectMedics } from 'src/app/state/medics.selectors';
+import { selectMedics, selectMedicsItems } from 'src/app/state/medics.selectors';
 
 @Component({
   selector: 'app-medics',
@@ -11,11 +14,11 @@ import { selectMedics } from 'src/app/state/medics.selectors';
 })
 export class MedicsComponent implements OnInit {
 
-  medics$ = this.store.select(selectMedics)
+  medics$: Observable<Medic[]> = this.store.select(selectMedicsItems)
 
   constructor(
     private medicService: MedicService,
-    private store: Store
+    private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
@@ -25,6 +28,7 @@ export class MedicsComponent implements OnInit {
   getMedics(): void {
     this.medicService.getMedics()
       .subscribe(medics => this.store.dispatch(retrievedMedicsList({ medics })))
+      console.log(this.medics$)
   }
 
   addMedic(): void {

@@ -2,10 +2,28 @@
     <div class="side-calendar">
         <mat-calendar [(selected)]="currentDate"></mat-calendar>
         <div class="calendar-actions">
-            <button mat-raised-button>Add appointment</button>
+            <form [formGroup]="appointmentForm">
+                <mat-form-field>
+                    <input placeholder="Patient first name" matInput formControlName="firstName">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input placeholder="Patient last name" matInput formControlName="lastName">
+                </mat-form-field>
+
+                <div class="datetime-input-container">
+                    <label>Start date</label>
+                    <input type="datetime-local" formControlName="startDate">
+                    <label>End date</label>
+                    <input type="datetime-local" formControlName="endDate">
+                </div>
+                
+                <button mat-raised-button (click)="addAppointment()">Add appointment</button>
+            </form>
         </div>
     </div>
     <div class="main-calendar">
+        <ng-container *ngFor="let schedule of schedule$ | async">{{schedule | json}}</ng-container>
         <div class="week-grid-headers">
             <div class="icon-container">
                 <mat-icon>schedule</mat-icon>

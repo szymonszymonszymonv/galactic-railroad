@@ -39,11 +39,42 @@
     grid: auto-flow 1fr / 0.50fr repeat(7, 1fr)
     justify-items: center
 
+.datetime-input-container
+    display: flex
+    flex-direction: column
+    justify-content: space-around
+    color: #727272
+    margin-bottom: 1rem
+    input[type=datetime-local]
+        position: relative
+        border: none
+        border-radius: 2px
+        border-bottom: 1px solid #8f8e8e
+        color: #727272
+        padding: 0.5rem
+        margin: 0.5rem
+        font-family: inherit
+        transition: background-color 0.25s
+        &:hover
+            background-color: rgba(0, 0, 0, 0.1)
+        &::-webkit-calendar-picker-indicator
+            background: transparent
+            color: transparent
+            position: absolute
+            top: 0
+            right: 0
+            bottom: 0
+            left: 0
+            width: auto
+            height: auto
+
 .calendar-actions
     display: flex
     align-items: center
-    justify-content: center
-
+    justify-content: start
+    margin: 1rem
+    mat-form-field
+        padding-left: 0.5rem
 .week
     display: flex
     flex-direction: column
