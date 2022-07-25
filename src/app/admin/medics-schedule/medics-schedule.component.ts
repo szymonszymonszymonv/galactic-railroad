@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
 import { MedicService } from 'src/app/medic/medic.service';
 import {
   addAppointment,
+  removedAppointment,
   retrievedAppointmentsList,
+  selectedCurrentDate,
 } from 'src/app/state/medics.actions';
 import {
   selectAppointments,
   selectChosenMedic,
+  selectCurrentAppointments,
+  selectCurrentDate,
 } from 'src/app/state/medics.selectors';
 import { Appointment } from '../../appointment';
 import { Patient } from '../../patient';
@@ -20,6 +23,7 @@ import { Patient } from '../../patient';
   styleUrls: ['./medics-schedule.component.sass'],
 })
 export class MedicsScheduleComponent implements OnInit {
+
   // TODO: split into smaller components
 
   EVENT_SIZE: number = 6;
@@ -29,39 +33,41 @@ export class MedicsScheduleComponent implements OnInit {
 
   schedule$ = this.store.select(selectAppointments);
   selectedMedic$ = this.store.select(selectChosenMedic);
+  currentAppointments$ = this.store.select(selectCurrentAppointments)
 
   appointmentForm = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     startDate: new FormControl('', [Validators.required]),
     endDate: new FormControl('', [Validators.required]),
+    description: new FormControl('', []),
   });
 
-  events: any = [
-    // {
-    //   event: {
-    //     startingDate: new Date('2022-07-20T08:20:00'),
-    //     endingDate: new Date('2022-07-20T09:00:00'),
-    //   },
-    //   height: 1,
-    //   margin: 1,
-    // },
-    // {
-    //   event: {
-    //     startingDate: new Date('2022-07-20T09:30:00'),
-    //     endingDate: new Date('2022-07-20T11:00:00'),
-    //   },
-    //   height: 1,
-    //   margin: 1,
-    // },
-  ];
+  events: any = [];
+  eventsDays: { [key: number]: any[] } = {
+    0: [],
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+    6: [],
+  };
+
+  activeAppointment: Appointment = {} as Appointment
+  editOpened: boolean = false
 
   constructor(private medicService: MedicService, private store: Store) {}
 
   ngOnInit(): void {
-    // this.initializeMarginsSizes();
     this.getAppointments();
-    this.schedule$.subscribe((appointments) => this.handleAppointments(appointments))
+    // this.schedule$.subscribe((appointments) => this.handleAppointments(appointments))
+    this.currentAppointments$.subscribe(appointments => this.handleAppointments(appointments))
+  }
+
+  // js modulo sucks
+  mod(a: number, b: number): number {
+    return ((a % b) + b) % b
   }
 
   addAppointment(): void {
@@ -72,62 +78,89 @@ export class MedicsScheduleComponent implements OnInit {
         firstName: this.appointmentForm.value.firstName!,
         lastName: this.appointmentForm.value.lastName!,
       },
+      description: this.appointmentForm.value.description!
     };
     this.medicService
       .addAppointment(appointment)
       .subscribe(appointment =>
         this.store.dispatch(addAppointment({ appointment }))
       );
-    // this.initializeMarginsSizes();
+  }
+
+  removeAppointment(appointment: Appointment): void {
+    this.medicService.removeAppointment(appointment._id!).subscribe(appointment => 
+      this.store.dispatch(removedAppointment({appointment}))  
+    )
+  }
+
+  selectAppointment(appointment: Appointment): void {
+    this.editOpened = true
+    this.activeAppointment = appointment
   }
 
   getAppointments(): void {
     this.medicService
       .getAppointments()
       .subscribe(appointments => this.store.dispatch(retrievedAppointmentsList({appointments})))
-      // .subscribe((appointments) => this.handleAppointments(appointments));
+    }
+    
+  onSelectDate(): void {
+    this.store.dispatch(selectedCurrentDate({currentDate: this.currentDate}))
   }
 
   handleAppointments(appointments: Appointment[]): void {
-    let previous = null;
     this.events = [...appointments.map(item => ({...item}))];
-
-    for (let i = 0; i < this.events.length; i++) {
-      // set height
-      let timeDiff = this.events[i].endDate - this.events[i].startDate;
-      let timeInMinutes = timeDiff / (1000 * 60);
-      this.events[i].height = (this.EVENT_SIZE * timeInMinutes) / 60;
-
-      if (this.events[i].height > 6) {
-        // ??? witchcraft
-        this.events[i].height += Math.ceil(this.events[i].height / 6) - 1;
-      }
-      this.events[i].height = this.events[i].height.toFixed(2);
-
-      // set margin
-      // if no previous event, difference in time between current event and START_HOUR
-      if (i === 0) {
-        let startTime = new Date(this.events[i].startDate);
-        startTime.setHours(this.START_HOUR);
-        startTime.setMinutes(0);
-
-        timeDiff =
-          (this.events[i].startDate).getTime() - startTime.getTime();
-        timeInMinutes = timeDiff / (1000 * 60);
-      } else {
-        // difference in time between current and previous event
-        timeDiff =
-          (this.events[i].startDate ).getTime() -
-          this.events[i - 1].endDate.getTime();
-        timeInMinutes = timeDiff / (1000 * 60);
-      }
-      this.events[i].margin = ((this.EVENT_SIZE * timeInMinutes) / 60).toFixed(2);
-
-      // make it rem
-      this.events[i].margin = this.events[i].margin + 'rem';
-      this.events[i].height = this.events[i].height + 'rem';
+    // clear arrays
+    for(let day in this.eventsDays) {
+      this.eventsDays[day].length = 0
     }
-
-    // this.store.dispatch(retrievedAppointmentsList({ appointments }));
+    for(let appointment of this.events) {
+      this.eventsDays[this.mod((appointment.startDate as Date).getDay() - 1, 7)].push(appointment)
+    }
+    for(let day in this.eventsDays) {
+      let previous: Appointment | null = null
+      
+      for (let event of this.eventsDays[day]) {
+        // set height
+        let timeDiff = event.endDate - event.startDate;
+        let timeInMinutes = timeDiff / (1000 * 60);
+        event.height = (this.EVENT_SIZE * timeInMinutes) / 60;
+  
+        // ??? witchcraft
+        if (event.height > 6) {
+          event.height += Math.ceil(event.height / this.EVENT_SIZE) - 1;
+        }
+        event.height = event.height.toFixed(2);
+  
+        // set margin
+        // if no previous event, difference in time between current event and START_HOUR
+        if (!previous) {
+          let startTime = new Date(event.startDate);
+          startTime.setHours(this.START_HOUR);
+          startTime.setMinutes(0);
+          
+          timeDiff =
+            (event.startDate).getTime() - startTime.getTime();
+          timeInMinutes = timeDiff / (1000 * 60);
+        } else {
+          // difference in time between current and previous event
+          timeDiff =
+            (event.startDate ).getTime() - (previous.endDate as Date).getTime();
+          timeInMinutes = timeDiff / (1000 * 60);
+        }
+        event.margin = ((this.EVENT_SIZE * timeInMinutes) / 60);
+        
+        // ??? witchcraft 2
+        if(event.margin >= 6) {
+          event.margin += Math.floor(event.margin / this.EVENT_SIZE) 
+        }
+        event.margin = event.margin.toFixed(2)
+  
+        // make it rem
+        event.margin = event.margin + 'rem';
+        event.height = event.height + 'rem';
+        previous = event
+      }
+    }
   }
 }

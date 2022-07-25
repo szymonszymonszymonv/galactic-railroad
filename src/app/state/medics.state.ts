@@ -5,4 +5,5 @@ export interface MedicsState {
     medics: Medic[]
     selectedMedic: Medic | null
     appointments: Appointment[]
+    currentDate: Date
 } 

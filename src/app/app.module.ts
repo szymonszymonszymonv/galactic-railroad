@@ -26,6 +26,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { MatDividerModule } from '@angular/material/divider';
+import { AppointmentCardComponent } from './appointment-card/appointment-card.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { AppointmentEditComponent } from './appointment-edit/appointment-edit.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +38,9 @@ import { environment } from '../environments/environment';
     MedicsScheduleComponent,
     RegisterComponent,
     LoginComponent,
-    AdminComponent
+    AdminComponent,
+    AppointmentCardComponent,
+    AppointmentEditComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +60,9 @@ import { environment } from '../environments/environment';
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    MatDividerModule,
+    MatSidenavModule
     
   ],
   providers: [

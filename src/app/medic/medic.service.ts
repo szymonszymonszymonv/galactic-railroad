@@ -69,17 +69,27 @@ export class MedicService {
   addAppointment(appointment: Appointment): Observable<Appointment> {
     return this.httpClient.post('appointments', appointment).pipe(
       map(appointment => {
-        return {
-          ...appointment,
-          startDate: new Date((appointment as Appointment).startDate),
-          endDate: new Date((appointment as Appointment).endDate),
-        } as Appointment
+        return appointment as Appointment
+        // return {
+        //   ...appointment,
+        //   startDate: new Date((appointment as Appointment).startDate),
+        //   endDate: new Date((appointment as Appointment).endDate),
+        // } as Appointment
       }),
       tap((_) => {
         console.log('adding appointmnet');
       }),
       catchError(this.handleError<Appointment>('addAppointment()'))
     );
+  }
+
+  removeAppointment(appointmentId: string): Observable<any> {
+    return this.httpClient.delete(`appointments/${appointmentId}`).pipe(
+      tap((_) => {
+        console.log('deleting appointment');
+      }),
+      catchError(this.handleError<Appointment>('removeAppointment()'))
+    )
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

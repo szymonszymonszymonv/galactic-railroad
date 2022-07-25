@@ -1,85 +1,120 @@
-<div class="calendar">
-    <div class="side-calendar">
-        <mat-calendar [(selected)]="currentDate"></mat-calendar>
-        <div class="calendar-actions">
-            <form [formGroup]="appointmentForm">
-                <mat-form-field>
-                    <input placeholder="Patient first name" matInput formControlName="firstName">
-                </mat-form-field>
+<mat-sidenav-container>
+    <!-- side edit appointment form -->
+    <mat-sidenav position="end" [(opened)]="editOpened">
+        <app-appointment-edit
+        [appointment]="activeAppointment"
+        >
 
-                <mat-form-field>
-                    <input placeholder="Patient last name" matInput formControlName="lastName">
-                </mat-form-field>
+        </app-appointment-edit>
 
-                <div class="datetime-input-container">
-                    <label>Start date</label>
-                    <input type="datetime-local" formControlName="startDate">
-                    <label>End date</label>
-                    <input type="datetime-local" formControlName="endDate">
-                </div>
-                
-                <button mat-raised-button (click)="addAppointment()">Add appointment</button>
-            </form>
-        </div>
-    </div>
-    <div class="main-calendar">
-        <ng-container *ngFor="let schedule of schedule$ | async">{{schedule | json}}</ng-container>
-        <div class="week-grid-headers">
-            <div class="icon-container">
-                <mat-icon>schedule</mat-icon>
-            </div>
-            <div class="week-header monday">monday</div>
-            <div class="week-header tuesday">tuesday</div>
-            <div class="week-header wednesday">wednesday</div>
-            <div class="week-header thursday">thursday</div>
-            <div class="week-header friday">friday</div>
-            <div class="week-header saturday">saturday</div>
-            <div class="week-header sunday">sunday</div>
-        </div>
-        <div class="schedule-grid">
-            <!-- fill dynamically -->
-            <div class="time-side">
-                <div class="schedule-item time-header">8</div>
-                <div class="schedule-item time-header">9</div>
-                <div class="schedule-item time-header">10</div>
-                <div class="schedule-item time-header">11</div>
-                <div class="schedule-item time-header">12</div>
-                <div class="schedule-item time-header">13</div>
-                <div class="schedule-item time-header">14</div>
-                <div class="schedule-item time-header">15</div>
-                <div class="schedule-item time-header">16</div>
-                <div class="schedule-item time-header">17</div>
-                <div class="schedule-item time-header">18</div>
-                <div class="schedule-item time-header">19</div>
-                <div class="schedule-item time-header">20</div>
-            </div>
-            <div class="week monday">
-                <div 
-                *ngFor="let event of events" 
-                class="schedule-item task"
-                [ngStyle]="{'margin-top': event.margin, 'height': event.height}"
-                >
-                    event
+    </mat-sidenav>
+
+    <!-- main content -->
+    <mat-sidenav-content>
+        <div class="calendar">
+            <div class="side-calendar">
+                <mat-calendar [(selected)]="currentDate" (selectedChange)="onSelectDate()" ></mat-calendar>
+        
+                <div class="calendar-actions">
+                    <form [formGroup]="appointmentForm">
+                        <mat-divider></mat-divider>
+                        <h3>Add appointment</h3>
+                        <mat-form-field>
+                            <input placeholder="Patient first name" matInput formControlName="firstName">
+                        </mat-form-field>
+        
+                        <mat-form-field>
+                            <input placeholder="Patient last name" matInput formControlName="lastName">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input placeholder="Description" matInput formControlName="description">
+                        </mat-form-field>
+                        <div class="datetime-input-container">
+                            <label>Start date</label>
+                            <input type="datetime-local" formControlName="startDate">
+                            <label>End date</label>
+                            <input type="datetime-local" formControlName="endDate">
+                        </div>
+                        
+                        <button mat-raised-button (click)="addAppointment()">Add appointment</button>
+                    </form>
                 </div>
             </div>
-            <div class="week tuesday">
-                <div class="schedule-item task">kokos</div>
-            </div>
-            <div class="week wednesday">
-
-            </div>
-            <div class="week thursday">
-
-            </div>
-            <div class="week friday">
-
-            </div>
-            <div class="week saturday">
-
-            </div>
-            <div class="week sunday">
-
+            <div class="main-calendar">
+                <!-- <ng-container *ngFor="let schedule of schedule$ | async">{{schedule | json}}</ng-container> -->
+                <div class="week-grid-headers">
+                    <div class="icon-container">
+                        <mat-icon>schedule</mat-icon>
+                    </div>
+                    <div [ngClass]="{'active': currentDate.getDay() == 1}" class="week-header monday">monday</div>
+                    <div [ngClass]="{'active': currentDate.getDay() == 2}" class="week-header tuesday">tuesday</div>
+                    <div [ngClass]="{'active': currentDate.getDay() == 3}" class="week-header wednesday">wednesday</div>
+                    <div [ngClass]="{'active': currentDate.getDay() == 4}" class="week-header thursday">thursday</div>
+                    <div [ngClass]="{'active': currentDate.getDay() == 5}" class="week-header friday">friday</div>
+                    <div [ngClass]="{'active': currentDate.getDay() == 6}" class="week-header saturday">saturday</div>
+                    <div [ngClass]="{'active': currentDate.getDay() == 0}" class="week-header sunday">sunday</div>
+                </div>
+                <div class="schedule-grid">
+                    <div class="time-side">
+                        <div class="schedule-item time-header">8</div>
+                        <div class="schedule-item time-header">9</div>
+                        <div class="schedule-item time-header">10</div>
+                        <div class="schedule-item time-header">11</div>
+                        <div class="schedule-item time-header">12</div>
+                        <div class="schedule-item time-header">13</div>
+                        <div class="schedule-item time-header">14</div>
+                        <div class="schedule-item time-header">15</div>
+                        <div class="schedule-item time-header">16</div>
+                        <div class="schedule-item time-header">17</div>
+                        <div class="schedule-item time-header">18</div>
+                        <div class="schedule-item time-header">19</div>
+                        <div class="schedule-item time-header">20</div>
+                    </div>
+                    <div 
+                        *ngFor="let day of eventsDays | keyvalue" 
+                        [ngClass]="{'active': mod(+day.key+1, 7) === currentDate.getDay(), 'event-container': true}"
+                    >
+                        <app-appointment-card
+                            class="schedule-item task"
+                            *ngFor="let appointment of day.value" 
+                            [ngStyle]="{'margin-top': appointment.margin, 'min-height': appointment.height}"
+                            [appointment]="appointment"
+                            (removeAppointment)="removeAppointment($event)"
+                            (selectAppointment)="selectAppointment($event)"
+                            >
+                        </app-appointment-card>
+        
+                    </div>
+                    <!-- <div class="week monday">
+                        <app-appointment-card
+                            class="schedule-item task"
+                            *ngFor="let appointment of events" 
+                            [ngStyle]="{'margin-top': appointment.margin, 'height': appointment.height}"
+                            [appointment]="appointment"
+                            (removeAppointment)="removeAppointment($event)">
+        
+                            </app-appointment-card>
+                    </div>
+                    <div class="week tuesday">
+        
+                    </div>
+                    <div class="week wednesday">
+        
+                    </div>
+                    <div class="week thursday">
+        
+                    </div>
+                    <div class="week friday">
+        
+                    </div>
+                    <div class="week saturday">
+        
+                    </div>
+                    <div class="week sunday">
+        
+                    </div> -->
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

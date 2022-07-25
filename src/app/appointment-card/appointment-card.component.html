@@ -1,0 +1,16 @@
+<div class="appointment-card" >
+    <div class="card-header">
+        
+        <span class="description">{{appointment.description}}</span>
+        <span class="name">{{appointment.patient.firstName + ' ' + appointment.patient.lastName}}</span>
+        <span class="date">{{appointment.startDate | date:'HH:mm'}} - {{appointment.endDate | date:'HH:mm'}}</span>
+    </div>
+    <div class="card-footer">
+        <button type="button" class="appointment-action" (click)="editAppointment()">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button type="button" class="appointment-action" id="delete" (click)="deleteAppointment()">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+</div>

@@ -42,13 +42,26 @@ router.post("/appointments", async (req, res) => {
         const appointment = new Appointment({ 
             startDate: req.body.startDate, 
             endDate: req.body.endDate, 
-            patient: patient
+            patient: patient,
+            description: req.body.description
         })
         await appointment.save(
             res.send(appointment)
         )
     }
     catch(e) {
+        res.status(400).send(e.message)
+    }
+})
+
+router.delete("/appointments/:id", async (req, res) => {
+    console.log(`DELETE /appointments`)
+    let appointment = await Appointment.findOne({_id: req.params.id})
+    try {
+        await Appointment.deleteOne({_id: appointment._id})
+        res.status(200).send(appointment)
+    }
+    catch (e) {
         res.status(400).send(e.message)
     }
 })

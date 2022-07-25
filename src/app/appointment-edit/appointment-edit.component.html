@@ -1,0 +1,22 @@
+<div class="edit-appointment" >
+    <h2>Edit appointment details</h2>
+    <mat-form-field>
+        <input matInput placeholder="Patient first name" value="{{_appointment?.description}}">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Patient last name" value="{{_appointment?.patient?.firstName + ' ' + _appointment?.patient?.lastName}}">
+
+    </mat-form-field>
+    <div class="datetime-input-container">
+        <input type="datetime-local" value="{{startDateISO}}">
+        <input type="datetime-local" value="{{endDateISO}}">
+        <!-- <span class="date editable">{{appointment.startDate | date:'HH:mm'}} - {{appointment.endDate | date:'HH:mm'}}</span> -->
+    </div>
+
+        <!-- <span class="date editable">{{appointment.startDate | date:'HH:mm'}} - {{appointment.endDate | date:'HH:mm'}}</span> -->
+        <!-- <button type="button" id="button-delete" (click)="deleteAppointment()"> -->
+    <div class="edit-actions">
+        <button mat-raised-button type="button">Save</button>
+        <button mat-raised-button type="reset">Cancel</button>
+    </div>
+</div>
