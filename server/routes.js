@@ -66,4 +66,17 @@ router.delete("/appointments/:id", async (req, res) => {
     }
 })
 
+router.put("/appointments/", async (req, res) => {
+    console.log(`PUT /appointments`)
+    Appointment.findOneAndUpdate(
+        {_id: req.body._id}, 
+        req.body,
+        { new: true },
+        ((err, doc) => {
+            if(err) return res.status(400).send(err.message)
+            console.log(doc)
+            return res.status(200).send(doc)
+        }))
+})
+
 module.exports = router

@@ -9,3 +9,5 @@ export const addAppointment = createAction('[Schedule] Add Appointment', props<{
 export const removedAppointment = createAction('[Schedule] Remove Appointment', props<{appointment: Appointment}>())
 export const retrievedAppointmentsList = createAction('[Appointment Collection/API] Retrieve Appointments', props<{appointments: Appointment[]}>())
 export const selectedCurrentDate = createAction('[Schedule] Select Current Date', props<{currentDate: Date}>())
+export const editedAppointment = createAction('[Schedule Sidebar] Edit Appointment', props<{appointment: Appointment}>())
+

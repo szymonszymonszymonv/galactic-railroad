@@ -3,6 +3,8 @@
     <mat-sidenav position="end" [(opened)]="editOpened">
         <app-appointment-edit
         [appointment]="activeAppointment"
+        [(editOpened)]="editOpened"
+        (sendEdit)="editAppointment($event)"
         >
 
         </app-appointment-edit>

@@ -92,6 +92,16 @@ export class MedicService {
     )
   }
 
+  editAppointment(appointment: Appointment): Observable<Appointment> {
+    return this.httpClient.put('appointments', appointment).pipe(
+      map(appointment => appointment as Appointment),
+      tap((_) => {
+        console.log('editing appointmnet');
+      }),
+      catchError(this.handleError<Appointment>('editAppointment()'))
+    )
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

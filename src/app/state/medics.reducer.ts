@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import {
   addAppointment,
   addMedic,
+  editedAppointment,
   removedAppointment,
   retrievedAppointmentsList,
   retrievedMedicsList,
@@ -55,5 +56,10 @@ export const medicsReducer = createReducer(
   on(selectedCurrentDate, (state, { currentDate }) => ({
     ...state,
     currentDate: currentDate,
+  })),
+
+  on(editedAppointment, (state, { appointment }) => ({
+    ...state,
+    appointments: [...state.appointments].map(item => item._id === appointment._id ? appointment : item)
   }))
 );

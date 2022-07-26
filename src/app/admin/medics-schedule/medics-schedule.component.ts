@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { MedicService } from 'src/app/medic/medic.service';
 import {
   addAppointment,
+  editedAppointment,
   removedAppointment,
   retrievedAppointmentsList,
   selectedCurrentDate,
@@ -40,7 +41,7 @@ export class MedicsScheduleComponent implements OnInit {
     lastName: new FormControl('', [Validators.required]),
     startDate: new FormControl('', [Validators.required]),
     endDate: new FormControl('', [Validators.required]),
-    description: new FormControl('', []),
+    description: new FormControl('', [Validators.required]),
   });
 
   events: any = [];
@@ -85,6 +86,18 @@ export class MedicsScheduleComponent implements OnInit {
       .subscribe(appointment =>
         this.store.dispatch(addAppointment({ appointment }))
       );
+  }
+  editAppointment(appointment: Appointment): void {
+    appointment = {
+      ...appointment,
+      startDate: new Date(appointment.startDate),
+      endDate: new Date(appointment.endDate)
+    }
+    this.medicService
+      .editAppointment(appointment)
+      .subscribe(appointment =>
+        this.store.dispatch(editedAppointment({ appointment }))
+      )
   }
 
   removeAppointment(appointment: Appointment): void {
