@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { Appointment } from '../appointment';
+import { Specialty } from '../specialty';
 import { Medic } from './medic';
 
 @Injectable({
@@ -19,14 +20,45 @@ export class MedicService {
     );
   }
 
+  getSpecialties(): Observable<Specialty[]> {
+    return this.httpClient.get<Specialty[]>('specialties').pipe(
+      tap((_) => {
+        console.log('fetching specialties');
+      }),
+      catchError(this.handleError<Specialty[]>('getSpecialties()'))
+    );
+  }
+
+  getAvailableAppointments(params: any = {}): Observable<Appointment[]> {
+    return this.httpClient.get<Appointment[]>('appointments/available', {params: params}).pipe(
+      map((appointments) => 
+        appointments
+          .sort(
+            (a, b) =>
+              Date.parse(a.startDate as string) - Date.parse(b.startDate as string)
+          )
+          .map((appointment) => {
+            return {
+              ...appointment,
+              startDate: new Date(appointment.startDate),
+              endDate: new Date(appointment.endDate),
+            };
+          })
+      ),
+      tap((_) => {
+        console.log('fetching appointments');
+      }),
+      catchError(this.handleError<Appointment[]>('getAppointments()'))
+    );
+  }
+
   getAppointments(): Observable<Appointment[]> {
     return this.httpClient.get<Appointment[]>('appointments').pipe(
       map((appointments) => 
         appointments
           .sort(
             (a, b) =>
-              Date.parse(a.startDate as string) -
-              Date.parse(b.startDate as string)
+              Date.parse(a.startDate as string) - Date.parse(b.startDate as string)
           )
           .map((appointment) => {
             return {

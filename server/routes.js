@@ -5,6 +5,7 @@ const { Patient } = require('./schema/Patient')
 const { Medic } = require('./schema/Medic')
 const { Schedule } = require('./schema/Schedule')
 const { Appointment } = require('./schema/Appointment')
+const { Specialty } = require('./schema/Specialty')
 
 
 router.get("/medics", async (req, res) => {
@@ -13,10 +14,24 @@ router.get("/medics", async (req, res) => {
     res.send(medics)
 })
 
+router.get("/specialties", async (req, res) => {
+    console.log("GET /specialties")
+    const specialties = await Specialty.find()
+    res.send(specialties)
+})
+
 router.get("/appointments", async (req, res) => {
     console.log("GET /appointments")
     const appointments = await Appointment.find()
     res.send(appointments)
+})
+
+router.get("/appointments/available", async (req, res) => {
+    // console.log(req.query)
+    // TODO: to zrobic :D
+    // FIXME: jestem niezrobiony :( 
+
+    res.send(req.query)
 })
 
 router.post("/admin", async (req, res) => {
@@ -25,6 +40,42 @@ router.post("/admin", async (req, res) => {
         const admin = new Admin({ email: req.body.email, password: req.body.password })
         await admin.save(
             res.send(admin)
+        )
+    }
+    catch(e) {
+        res.status(400).send(e.message)
+    }
+})
+
+router.post("/admin", async (req, res) => {
+    console.log(`POST /admin`)
+    try {
+        const admin = new Admin({ email: req.body.email, password: req.body.password })
+        await admin.save(
+            res.send(admin)
+        )
+    }
+    catch(e) {
+        res.status(400).send(e.message)
+    }
+})
+
+router.post("/medics", async (req, res) => {
+    console.log(`POST /medics`)
+    try {
+        const specialty = await Specialty.findOneAndUpdate(
+            {name: req.body.specialty.name},
+            {name: req.body.specialty.name},
+            {new: true, upsert: true},
+        )
+
+        const medic = new Medic({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            specialty: specialty
+        })
+        await medic.save(
+            res.send(medic)
         )
     }
     catch(e) {

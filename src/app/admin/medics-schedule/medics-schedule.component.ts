@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { MedicService } from 'src/app/medic/medic.service';
@@ -23,7 +23,7 @@ import { Patient } from '../../patient';
   templateUrl: './medics-schedule.component.html',
   styleUrls: ['./medics-schedule.component.sass'],
 })
-export class MedicsScheduleComponent implements OnInit {
+export class MedicsScheduleComponent implements OnInit, OnDestroy {
 
   // TODO: split into smaller components
 
@@ -59,6 +59,10 @@ export class MedicsScheduleComponent implements OnInit {
   editOpened: boolean = false
 
   constructor(private medicService: MedicService, private store: Store) {}
+
+  ngOnDestroy(): void {
+    this.store.dispatch(selectedCurrentDate({currentDate: new Date()}))
+  }
 
   ngOnInit(): void {
     this.getAppointments();

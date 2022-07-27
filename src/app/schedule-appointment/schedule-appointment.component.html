@@ -1,0 +1,17 @@
+<div class="schedule-filters">
+
+    <label>
+        select date range
+        <input type="datetime-local" [(ngModel)]="startDate">
+        <input type="datetime-local" [(ngModel)]="endDate">
+    </label>
+    <mat-form-field>
+        <mat-label>Select specialty</mat-label>
+        <mat-select [(ngModel)]="specialty">
+            <mat-option *ngFor="let specialty of allSpecialties" [value]="specialty">{{specialty.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div class="available-medics-list">
+
+</div>

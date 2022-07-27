@@ -16,6 +16,10 @@ export class MedicsComponent implements OnInit {
 
   medics$: Observable<Medic[]> = this.store.select(selectMedicsItems)
 
+  firstName: string = ''
+  lastName: string = ''
+  specialty: string = ''
+
   constructor(
     private medicService: MedicService,
     private store: Store<AppState>
@@ -28,12 +32,16 @@ export class MedicsComponent implements OnInit {
   getMedics(): void {
     this.medicService.getMedics()
       .subscribe(medics => this.store.dispatch(retrievedMedicsList({ medics })))
-      console.log(this.medics$)
   }
 
   addMedic(): void {
-    // this.medicService.addMedic()
-    //   .subscribe(medic => this.store.dispatch(addMedic({ medic })))
+    const medic = {
+      firstName: this.firstName,
+      lastName: this.lastName,
+      specialty: {name: this.specialty}
+    }
+    this.medicService.addMedic(medic)
+      .subscribe(medic => this.store.dispatch(addMedic({ medic })))
   }
 
 }

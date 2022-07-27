@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Appointment } from '../appointment';
+import { dateForDateTimeInputValue } from '../utils';
 
 @Component({
   selector: 'app-appointment-edit',
@@ -14,8 +15,8 @@ export class AppointmentEditComponent implements OnInit {
     if(Object.keys(appointment).length === 0) return
 
     this._appointment = appointment
-    this.startDateISO = this.dateForDateTimeInputValue(appointment.startDate as Date)
-    this.endDateISO = this.dateForDateTimeInputValue(appointment.endDate as Date)
+    this.startDateISO = dateForDateTimeInputValue(appointment.startDate as Date)
+    this.endDateISO = dateForDateTimeInputValue(appointment.endDate as Date)
     this.appointmentForm.setValue({
       _id: appointment._id!,
       firstName: this._appointment?.patient?.firstName,
@@ -53,12 +54,5 @@ export class AppointmentEditComponent implements OnInit {
   cancel(): void {
     this.editOpenedChange.emit(false)
   }
-
-  dateForDateTimeInputValue(date: Date): string {
-    if(date) {
-      return new Date(date?.getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
-    }
-    return ""
-  } 
 
 }

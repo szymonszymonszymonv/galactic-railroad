@@ -1,9 +1,9 @@
 import { Specialty } from "../specialty"
 
 export interface Medic {
-    _id: string,
+    _id?: string,
     firstName: string,
     lastName: string,
     specialty: Specialty
-    schedule: any // change type to Schedule
+    schedule?: any // change type to Schedule
 }

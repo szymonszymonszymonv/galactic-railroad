@@ -30,6 +30,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { AppointmentCardComponent } from './appointment-card/appointment-card.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { AppointmentEditComponent } from './appointment-edit/appointment-edit.component';
+import { ScheduleAppointmentComponent } from './schedule-appointment/schedule-appointment.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { AppointmentEditComponent } from './appointment-edit/appointment-edit.co
     LoginComponent,
     AdminComponent,
     AppointmentCardComponent,
-    AppointmentEditComponent
+    AppointmentEditComponent,
+    ScheduleAppointmentComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +65,8 @@ import { AppointmentEditComponent } from './appointment-edit/appointment-edit.co
     MatIconModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     MatDividerModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatSelectModule
     
   ],
   providers: [

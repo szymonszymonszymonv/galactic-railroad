@@ -1,8 +1,21 @@
 <div>
-    <button mat-raised-button (click)="addMedic()">Add medic</button>
+    <div class="create-medic">
+        <h3>Create medic</h3>
+        <mat-form-field>
+            <input matInput placeholder="First name" [(ngModel)]="firstName">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Last name" [(ngModel)]="lastName">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Specialty" [(ngModel)]="specialty">
+        </mat-form-field>
+
+        <button mat-raised-button (click)="addMedic()">Send</button>
+    </div>
     <div>
         <mat-list-item *ngFor="let medic of medics$ | async">
-            {{medic | json}}
+            <!-- {{medic | json}} -->
             <mat-card class="medic-card">
                 <mat-card-title>{{(medic.firstName + ' ' + medic.lastName)}}</mat-card-title>
                 <mat-card-subtitle>{{medic.specialty.name}}</mat-card-subtitle>
