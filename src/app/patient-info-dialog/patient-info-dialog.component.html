@@ -1,0 +1,15 @@
+<h2>Enter your info</h2>
+<div class="patient-input">
+    <mat-form-field>
+
+        <input matInput [(ngModel)]="patient.firstName" required placeholder="First name">
+    </mat-form-field>
+    <mat-form-field>
+
+        <input matInput [(ngModel)]="patient.lastName" required placeholder="Last name">
+    </mat-form-field>
+    <ng-container *ngIf="error">
+        <span class="error">Fill required fields</span>
+    </ng-container>
+    <button mat-raised-button type="button" (click)="closeDialog()">Submit</button>
+</div>

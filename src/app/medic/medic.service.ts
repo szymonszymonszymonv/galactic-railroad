@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { Appointment } from '../appointment';
+import { FreeAppointment } from '../freeAppointment';
 import { Specialty } from '../specialty';
 import { Medic } from './medic';
 
@@ -29,8 +30,8 @@ export class MedicService {
     );
   }
 
-  getAvailableAppointments(params: any = {}): Observable<Appointment[]> {
-    return this.httpClient.get<Appointment[]>('appointments/available', {params: params}).pipe(
+  getAvailableAppointments(params: any = {}): Observable<FreeAppointment[]> {
+    return this.httpClient.get<FreeAppointment[]>('appointments/available', {params: params}).pipe(
       map((appointments) => 
         appointments
           .sort(
@@ -46,14 +47,15 @@ export class MedicService {
           })
       ),
       tap((_) => {
-        console.log('fetching appointments');
+        console.log('fetching available appointments');
+        console.log(_);
       }),
-      catchError(this.handleError<Appointment[]>('getAppointments()'))
+      catchError(this.handleError<FreeAppointment[]>('getAvailableAppointments()'))
     );
   }
 
-  getAppointments(): Observable<Appointment[]> {
-    return this.httpClient.get<Appointment[]>('appointments').pipe(
+  getAppointments(medicId: string): Observable<Appointment[]> {
+    return this.httpClient.get<Appointment[]>(`medics/${medicId}/appointments`).pipe(
       map((appointments) => 
         appointments
           .sort(
@@ -74,20 +76,6 @@ export class MedicService {
       catchError(this.handleError<Appointment[]>('getAppointments()'))
     );
   }
-  //   [...medics.appointments]
-  //     .sort((a, b) => {
-  //       return (
-  //         Date.parse(a.startDate as string) - Date.parse(b.startDate as string)
-  //       );
-  //     })
-  //     .map((appointment) => {
-  //       return {
-  //         ...appointment,
-  //         startDate: new Date(appointment.startDate),
-  //         endDate: new Date(appointment.endDate),
-  //       };
-  //     })
-  // );
 
   addMedic(medic: Medic): Observable<any> {
     return this.httpClient.post('medics', medic).pipe(
@@ -98,15 +86,10 @@ export class MedicService {
     );
   }
 
-  addAppointment(appointment: Appointment): Observable<Appointment> {
-    return this.httpClient.post('appointments', appointment).pipe(
+  addAppointment(appointment: Appointment, medicId: string): Observable<Appointment> {
+    return this.httpClient.post(`medics/${medicId}/appointments`, appointment).pipe(
       map(appointment => {
         return appointment as Appointment
-        // return {
-        //   ...appointment,
-        //   startDate: new Date((appointment as Appointment).startDate),
-        //   endDate: new Date((appointment as Appointment).endDate),
-        // } as Appointment
       }),
       tap((_) => {
         console.log('adding appointmnet');

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Medic } from 'src/app/medic/medic';
 import { MedicService } from 'src/app/medic/medic.service';
 import { AppState } from 'src/app/state/app.state';
-import { addMedic, retrievedMedicsList } from 'src/app/state/medics.actions';
+import { addMedic, retrievedMedicsList, selectMedic } from 'src/app/state/medics.actions';
 import { selectMedics, selectMedicsItems } from 'src/app/state/medics.selectors';
 
 @Component({
@@ -33,7 +33,7 @@ export class MedicsComponent implements OnInit {
     this.medicService.getMedics()
       .subscribe(medics => this.store.dispatch(retrievedMedicsList({ medics })))
   }
-
+  
   addMedic(): void {
     const medic = {
       firstName: this.firstName,

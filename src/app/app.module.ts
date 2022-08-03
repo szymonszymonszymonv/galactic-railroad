@@ -32,6 +32,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { AppointmentEditComponent } from './appointment-edit/appointment-edit.component';
 import { ScheduleAppointmentComponent } from './schedule-appointment/schedule-appointment.component';
 import { MatSelectModule } from '@angular/material/select';
+import { PatientInfoDialogComponent } from './patient-info-dialog/patient-info-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,8 @@ import { MatSelectModule } from '@angular/material/select';
     AdminComponent,
     AppointmentCardComponent,
     AppointmentEditComponent,
-    ScheduleAppointmentComponent
+    ScheduleAppointmentComponent,
+    PatientInfoDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +70,9 @@ import { MatSelectModule } from '@angular/material/select';
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     MatDividerModule,
     MatSidenavModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDialogModule,
+    MatMenuModule
     
   ],
   providers: [

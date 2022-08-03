@@ -1,28 +1,14 @@
 .appointment-card
     display: flex
-    flex-direction: column
+    flex-direction: row
     justify-content: space-between
-    align-items: stretch
+    // align-items: stretch
     width: auto
     flex-wrap: wrap
     flex-grow: 1
     word-wrap: break-word
     height: auto
     font-size: 0.8rem
-.edit-actions
-    display: flex
-    flex-direction: row
-    justify-content: space-around
-    button
-        cursor: pointer
-        font-family: inherit
-        font-weight: bold
-        background-color: white
-        box-shadow: 0 2px 4px #686868
-        padding: 3px 8px
-        border: none
-        margin: 0 2px
-        border-radius: 4px
 input
     padding-bottom: 0.2rem
     margin-bottom: 0.5rem
@@ -37,57 +23,28 @@ input
     display: flex
     flex-direction: column
     flex-wrap: wrap
-    width: 100%
     word-wrap: break-word
     .description
         font-weight: bold
-.card-footer
-    display: flex
-    flex-direction: row
-    height: auto
-    justify-content: end
-    align-items: center
-    margin-top: auto
-    .appointment-action
-        padding: 0
-        margin: 0
-        border-radius: 1rem
-        border: none
-        cursor: pointer
-        background-color: transparent
-        color: #3a6fbe
-        transition: transform 0.25s
-        &:hover
-            transform: scale(1.11)
-    #delete
+        
+.corner
+    button
+        width: 0.5rem
+        color: black
+
+.appointment-action
+    // width: 15px
+    padding: 0
+    padding-right: 1rem
+    border-radius: 1rem
+    border: none
+    cursor: pointer
+    background-color: transparent
+#delete
+    color: #ce3832
+    .mat-icon
         color: #ce3832
-
 .mat-icon
+    padding: 0
+    margin: 0
     text-shadow: 1px 1px 5px gray
-
-.datetime-input-container
-    display: flex
-    flex-direction: column
-    color: #727272
-    max-width: auto
-    margin-bottom: 1rem
-    input[type=datetime-local]
-        border: none
-        border-radius: 2px
-        border-bottom: 1px solid #8f8e8e
-        color: #727272
-        padding: 0.5rem
-        font-family: inherit
-        transition: background-color 0.25s
-        &:hover
-            background-color: rgba(0, 0, 0, 0.1)
-        &::-webkit-calendar-picker-indicator
-            background: transparent
-            color: transparent
-            position: absolute
-            top: 0
-            right: 0
-            bottom: 0
-            left: 0
-            width: auto
-            height: auto

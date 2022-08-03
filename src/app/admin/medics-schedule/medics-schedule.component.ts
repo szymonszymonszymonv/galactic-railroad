@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Medic } from 'src/app/medic/medic';
 import { MedicService } from 'src/app/medic/medic.service';
 import {
   addAppointment,
@@ -33,7 +35,6 @@ export class MedicsScheduleComponent implements OnInit, OnDestroy {
   currentDate: Date = new Date();
 
   schedule$ = this.store.select(selectAppointments);
-  selectedMedic$ = this.store.select(selectChosenMedic);
   currentAppointments$ = this.store.select(selectCurrentAppointments)
 
   appointmentForm = new FormGroup({
@@ -55,16 +56,19 @@ export class MedicsScheduleComponent implements OnInit, OnDestroy {
     6: [],
   };
 
+  selectedMedicId: string = ""
+
   activeAppointment: Appointment = {} as Appointment
   editOpened: boolean = false
 
-  constructor(private medicService: MedicService, private store: Store) {}
+  constructor(private medicService: MedicService, private store: Store, private route: ActivatedRoute) {}
 
   ngOnDestroy(): void {
     this.store.dispatch(selectedCurrentDate({currentDate: new Date()}))
   }
 
   ngOnInit(): void {
+    this.selectedMedicId = this.route.snapshot.params['id']
     this.getAppointments();
     // this.schedule$.subscribe((appointments) => this.handleAppointments(appointments))
     this.currentAppointments$.subscribe(appointments => this.handleAppointments(appointments))
@@ -86,7 +90,7 @@ export class MedicsScheduleComponent implements OnInit, OnDestroy {
       description: this.appointmentForm.value.description!
     };
     this.medicService
-      .addAppointment(appointment)
+      .addAppointment(appointment, this.selectedMedicId)
       .subscribe(appointment =>
         this.store.dispatch(addAppointment({ appointment }))
       );
@@ -117,7 +121,7 @@ export class MedicsScheduleComponent implements OnInit, OnDestroy {
 
   getAppointments(): void {
     this.medicService
-      .getAppointments()
+      .getAppointments(this.selectedMedicId)
       .subscribe(appointments => this.store.dispatch(retrievedAppointmentsList({appointments})))
     }
     
@@ -144,8 +148,12 @@ export class MedicsScheduleComponent implements OnInit, OnDestroy {
         event.height = (this.EVENT_SIZE * timeInMinutes) / 60;
   
         // ??? witchcraft
-        if (event.height > 6) {
+        if (event.height >= 6) {
           event.height += Math.ceil(event.height / this.EVENT_SIZE) - 1;
+        }
+        // xD
+        else {
+          event.height -= 0.5
         }
         event.height = event.height.toFixed(2);
   

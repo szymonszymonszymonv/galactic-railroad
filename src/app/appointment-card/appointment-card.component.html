@@ -5,12 +5,27 @@
         <span class="name">{{appointment.patient.firstName + ' ' + appointment.patient.lastName}}</span>
         <span class="date">{{appointment.startDate | date:'HH:mm'}} - {{appointment.endDate | date:'HH:mm'}}</span>
     </div>
-    <div class="card-footer">
-        <button type="button" class="appointment-action" (click)="editAppointment()">
-            <mat-icon>edit</mat-icon>
+    <div class="corner">
+        <button type="button" class="appointment-action menu" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
         </button>
-        <button type="button" class="appointment-action" id="delete" (click)="deleteAppointment()">
-            <mat-icon >delete</mat-icon>
-        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item type="button" (click)="editAppointment()">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+            </button>
+            <button mat-menu-item type="button" id="delete" (click)="deleteAppointment()">
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
+            </button>
+            <!-- <button mat-menu-item>
+                akcja
+            </button>
+            <button mat-menu-item>
+                druga
+            </button> -->
+        </mat-menu>
     </div>
+    <!-- <div class="card-footer"> -->
+    <!-- </div> -->
 </div>

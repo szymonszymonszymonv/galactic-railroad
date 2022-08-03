@@ -21,7 +21,7 @@ export class AppointmentEditComponent implements OnInit {
       _id: appointment._id!,
       firstName: this._appointment?.patient?.firstName,
       lastName: this._appointment?.patient?.lastName,
-      description: this._appointment?.description!,
+      description: this._appointment?.description! ?? '',
       startDate: this.startDateISO,
       endDate: this.endDateISO
     })

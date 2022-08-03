@@ -1,17 +1,32 @@
 <div class="schedule-filters">
-
     <label>
-        select date range
-        <input type="datetime-local" [(ngModel)]="startDate">
-        <input type="datetime-local" [(ngModel)]="endDate">
+        Select date range
+        <div>
+            <mat-form-field>
+                <label>Start date</label>
+                <input type="datetime-local" matInput [(ngModel)]="startDate">
+            </mat-form-field>
+            <mat-form-field>
+                <label>End date</label>
+                <input type="datetime-local" matInput [(ngModel)]="endDate">
+            </mat-form-field>
+        </div>
     </label>
     <mat-form-field>
         <mat-label>Select specialty</mat-label>
         <mat-select [(ngModel)]="specialty">
-            <mat-option *ngFor="let specialty of allSpecialties" [value]="specialty">{{specialty.name}}</mat-option>
+            <mat-option *ngFor="let specialty of allSpecialties" [value]="specialty.name">{{specialty.name}}</mat-option>
         </mat-select>
     </mat-form-field>
 </div>
-<div class="available-medics-list">
-
+<div class="available-appointments-list">
+    <mat-card *ngFor="let available of availableAppointments; let i = index" class="appointment">
+        <mat-card-title>{{available.startDate | date:'HH:mm'}} - {{available.endDate | date:'HH:mm'}}</mat-card-title>
+        <mat-card-subtitle>{{available.medic.firstName}} {{available.medic.lastName}}</mat-card-subtitle>
+        <mat-card-subtitle>{{available.medic.specialty.name}}</mat-card-subtitle>
+        <mat-card-actions>
+            <button mat-raised-button (click)="openDialog(available, i)">Book an appointment</button>
+        </mat-card-actions>
+    </mat-card>
+<!-- {{availableAppointments | json}} -->
 </div>
